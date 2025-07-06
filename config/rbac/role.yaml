@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - reloader.akosrbn.io
+  resources:
+  - hotreloads
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - reloader.akosrbn.io
+  resources:
+  - hotreloads/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - reloader.akosrbn.io
+  resources:
+  - hotreloads/status
+  verbs:
+  - get
+  - patch
+  - update
