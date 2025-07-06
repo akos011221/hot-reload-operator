@@ -1,0 +1,87 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: hotreloadprojects.reloader.akosrbn.io
+spec:
+  group: reloader.akosrbn.io
+  names:
+    kind: HotReloadProject
+    listKind: HotReloadProjectList
+    plural: hotreloadprojects
+    singular: hotreloadproject
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: HotReloadProject is the Schema for the hotreloadprojects API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: HotReloadProjectSpec defines the desired state of HotReloadProject.
+            properties:
+              deployment:
+                description: |-
+                  Name of the Kubernetes Deployment that will be updated on changes.
+                  Must exist in the same namespace as the HotReloadProject.
+                  Example: "nginx-deployment"
+                type: string
+              dockerfile:
+                description: |-
+                  Path to the Dockerfile used for building the container image.
+                  Example: "./Dockerfile" or "docker/my.Dockerfile"
+                type: string
+              image:
+                description: |-
+                  Full reference to the container image (registry/repository:tag).
+                  Example: "localhost:5000/my-api:v1" or "docker.io/username/app:latest"
+                type: string
+            required:
+            - deployment
+            - dockerfile
+            - image
+            type: object
+          status:
+            description: HotReloadProjectStatus defines the observed state of HotReloadProject.
+            properties:
+              lastBuildTime:
+                description: LastBuildTime is when the last build occured
+                format: date-time
+                type: string
+              lastDeploymentTime:
+                description: LastDeploymentTime is when the last deployment update
+                  occured
+                format: date-time
+                type: string
+              lastSyncTime:
+                description: LastSyncTime is when the last code sync occurred
+                format: date-time
+                type: string
+              message:
+                description: Human-readable message for the status
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

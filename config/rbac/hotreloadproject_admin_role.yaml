@@ -1,0 +1,27 @@
+# This rule is not used by the project hot-reload itself.
+# It is provided to allow the cluster admin to help manage permissions for users.
+#
+# Grants full permissions ('*') over reloader.akosrbn.io.
+# This role is intended for users authorized to modify roles and bindings within the cluster,
+# enabling them to delegate specific permissions to other users or groups as needed.
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: hot-reload
+    app.kubernetes.io/managed-by: kustomize
+  name: hotreloadproject-admin-role
+rules:
+- apiGroups:
+  - reloader.akosrbn.io
+  resources:
+  - hotreloadprojects
+  verbs:
+  - '*'
+- apiGroups:
+  - reloader.akosrbn.io
+  resources:
+  - hotreloadprojects/status
+  verbs:
+  - get

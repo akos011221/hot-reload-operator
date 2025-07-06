@@ -5,9 +5,25 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments/status
+  verbs:
+  - get
+- apiGroups:
   - reloader.akosrbn.io
   resources:
-  - hotreloads
+  - hotreloadprojects
   verbs:
   - create
   - delete
@@ -19,13 +35,13 @@ rules:
 - apiGroups:
   - reloader.akosrbn.io
   resources:
-  - hotreloads/finalizers
+  - hotreloadprojects/finalizers
   verbs:
   - update
 - apiGroups:
   - reloader.akosrbn.io
   resources:
-  - hotreloads/status
+  - hotreloadprojects/status
   verbs:
   - get
   - patch

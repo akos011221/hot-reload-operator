@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/reloader.akosrbn.io_hotreloads.yaml
+- bases/reloader.akosrbn.io_hotreloadprojects.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

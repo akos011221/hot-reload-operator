@@ -30,7 +30,7 @@ import (
 	reloaderv1alpha1 "akosrbn.io/hot-reload/api/v1alpha1"
 )
 
-var _ = Describe("HotReload Controller", func() {
+var _ = Describe("HotReloadProject Controller", func() {
 	Context("When reconciling a resource", func() {
 		const resourceName = "test-resource"
 
@@ -40,13 +40,13 @@ var _ = Describe("HotReload Controller", func() {
 			Name:      resourceName,
 			Namespace: "default", // TODO(user):Modify as needed
 		}
-		hotreload := &reloaderv1alpha1.HotReload{}
+		hotreloadproject := &reloaderv1alpha1.HotReloadProject{}
 
 		BeforeEach(func() {
-			By("creating the custom resource for the Kind HotReload")
-			err := k8sClient.Get(ctx, typeNamespacedName, hotreload)
+			By("creating the custom resource for the Kind HotReloadProject")
+			err := k8sClient.Get(ctx, typeNamespacedName, hotreloadproject)
 			if err != nil && errors.IsNotFound(err) {
-				resource := &reloaderv1alpha1.HotReload{
+				resource := &reloaderv1alpha1.HotReloadProject{
 					ObjectMeta: metav1.ObjectMeta{
 						Name:      resourceName,
 						Namespace: "default",
@@ -59,16 +59,16 @@ var _ = Describe("HotReload Controller", func() {
 
 		AfterEach(func() {
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &reloaderv1alpha1.HotReload{}
+			resource := &reloaderv1alpha1.HotReloadProject{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
 
-			By("Cleanup the specific resource instance HotReload")
+			By("Cleanup the specific resource instance HotReloadProject")
 			Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
 		})
 		It("should successfully reconcile the resource", func() {
 			By("Reconciling the created resource")
-			controllerReconciler := &HotReloadReconciler{
+			controllerReconciler := &HotReloadProjectReconciler{
 				Client: k8sClient,
 				Scheme: k8sClient.Scheme(),
 			}

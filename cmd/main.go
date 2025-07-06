@@ -202,11 +202,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := (&controller.HotReloadReconciler{
+	if err := (&controller.HotReloadProjectReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "HotReload")
+		setupLog.Error(err, "unable to create controller", "controller", "HotReloadProject")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

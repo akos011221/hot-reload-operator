@@ -39,70 +39,19 @@ spec:
           spec:
             description: HotReloadSpec defines the desired state of HotReload.
             properties:
-              build:
-                description: Build defines the build configuration for the application
-                properties:
-                  args:
-                    additionalProperties:
-                      type: string
-                    description: Additional build arguments
-                    type: object
-                  context:
-                    description: Build context path
-                    type: string
-                  dockerfile:
-                    description: Path to the Dockerfile
-                    type: string
-                  imageName:
-                    description: Name of the image to build
-                    type: string
-                  registry:
-                    description: Target registry for the built image
-                    type: string
-                required:
-                - context
-                - dockerfile
-                - imageName
-                - registry
-                type: object
+              container:
+                type: string
               deployment:
-                description: Deployment defines the target deployment to manage
-                properties:
-                  containerName:
-                    description: Name of the container in the Deployment to update
-                    type: string
-                  name:
-                    description: Name of the Deployment to manage
-                    type: string
-                  namespace:
-                    default: default
-                    description: Namespace of the Deployment
-                    type: string
-                required:
-                - containerName
-                - name
-                type: object
-              sourceSync:
-                description: SourceSync defines how source code changes are detected
-                  and synchronized
-                properties:
-                  ignorePaths:
-                    description: List of paths/patterns to ignore when watching for
-                      changes
-                    items:
-                      type: string
-                    type: array
-                  webhook:
-                    description: Webhook endpoint that will be notified when changes
-                      are detected
-                    type: string
-                required:
-                - webhook
-                type: object
+                type: string
+              dockerfile:
+                type: string
+              image:
+                type: string
             required:
-            - build
+            - container
             - deployment
-            - sourceSync
+            - dockerfile
+            - image
             type: object
           status:
             description: HotReloadStatus defines the observed state of HotReload.

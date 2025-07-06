@@ -1,0 +1,9 @@
+apiVersion: reloader.akosrbn.io/v1alpha1
+kind: HotReloadProject
+metadata:
+  labels:
+    app.kubernetes.io/name: hot-reload
+    app.kubernetes.io/managed-by: kustomize
+  name: hotreloadproject-sample
+spec:
+  # TODO(user): Add fields here

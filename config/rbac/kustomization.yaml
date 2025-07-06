@@ -22,6 +22,9 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the hot-reload itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
+- hotreloadproject_admin_role.yaml
+- hotreloadproject_editor_role.yaml
+- hotreloadproject_viewer_role.yaml
 - hotreload_admin_role.yaml
 - hotreload_editor_role.yaml
 - hotreload_viewer_role.yaml

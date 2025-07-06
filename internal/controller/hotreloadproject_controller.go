@@ -25,18 +25,13 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
+	"akosrbn.io/hot-reload/api/v1alpha1"
 	reloaderv1alpha1 "akosrbn.io/hot-reload/api/v1alpha1"
 )
 
-const (
-	// lastReloadAnnotation is the annotation key that stores the timestamp
-	// of the last hot-reload operation in RFC3339 format.
-	lastReloadAnnotation = "reloader.akosrbn.io/last-reload"
-
-	// buildIdAnnotation is the annotation key that stores the unique identifier
-	// of the current build, where the ID is the commit hash
-	buildIdAnnotation = "reloader.akosrbn.io/build-id"
-)
+// lastReloadAnnotation is the annotation key that stores the timestamp
+// of the last hot-reload operation in RFC3339 format.
+const lastReloadAnnotation = "reloader.akosrbn.io/rebuilding"
 
 type realClock struct{}
 
@@ -55,10 +50,16 @@ type HotReloadReconciler struct {
 	Clock
 }
 
-// For HotReload Kind
-// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads/finalizers,verbs=update
+// HotReloadProjectReconciler reconciles a HotReloadProject object
+type HotReloadProjectReconciler struct {
+	client.Client
+	Scheme *runtime.Scheme
+}
+
+// For HotReloadProject resources
+// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloadprojects,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloadprojects/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloadprojects/finalizers,verbs=update
 
 // For Deployments (to restart/update containers)
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;update;patch
@@ -67,24 +68,28 @@ type HotReloadReconciler struct {
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the HotReload object against the actual cluster state, and then
+// the HotReloadProject object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.21.0/pkg/reconcile
-func (r *HotReloadReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = logf.FromContext(ctx)
+func (r *HotReloadProjectReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var project v1alpha1.HotReloadProject
+	if err := r.Get(ctx, req.NamespacedName, &project); err != nil {
+		log.Error(err, "Unable to fetch HotReloadProject")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
 
 	return ctrl.Result{}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *HotReloadReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *HotReloadProjectReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&reloaderv1alpha1.HotReload{}).
-		Named("hotreload").
+		For(&reloaderv1alpha1.HotReloadProject{}).
+		Named("hotreloadproject").
 		Complete(r)
 }
