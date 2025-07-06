@@ -63,21 +63,16 @@ spec:
           status:
             description: HotReloadProjectStatus defines the observed state of HotReloadProject.
             properties:
-              lastBuildTime:
-                description: LastBuildTime is when the last build occured
-                format: date-time
-                type: string
               lastDeploymentTime:
                 description: LastDeploymentTime is when the last deployment update
                   occured
                 format: date-time
                 type: string
-              lastSyncTime:
-                description: LastSyncTime is when the last code sync occurred
-                format: date-time
-                type: string
               message:
                 description: Human-readable message for the status
+                type: string
+              phase:
+                description: Phase is the current phase of the HotReloadProject resource
                 type: string
             type: object
         type: object

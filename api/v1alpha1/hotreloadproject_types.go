@@ -38,17 +38,13 @@ type HotReloadProjectSpec struct {
 
 // HotReloadProjectStatus defines the observed state of HotReloadProject.
 type HotReloadProjectStatus struct {
-	// LastSyncTime is when the last code sync occurred
-	// +optional
-	LastSyncTime *metav1.Time `json:"lastSyncTime,omitempty"`
-
-	// LastBuildTime is when the last build occured
-	// +optional
-	LastBuildTime *metav1.Time `json:"lastBuildTime,omitempty"`
-
 	// LastDeploymentTime is when the last deployment update occured
 	// +optional
 	LastDeploymentTime *metav1.Time `json:"lastDeploymentTime,omitempty"`
+
+	// Phase is the current phase of the HotReloadProject resource
+	// +optional
+	Phase string `json:"phase,omitempty"`
 
 	// Human-readable message for the status
 	// +optional
