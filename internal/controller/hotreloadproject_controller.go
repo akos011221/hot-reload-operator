@@ -43,17 +43,11 @@ type Clock interface {
 	Now() time.Time
 }
 
-// HotReloadReconciler reconciles a HotReload object
-type HotReloadReconciler struct {
-	client.Client
-	Scheme *runtime.Scheme
-	Clock
-}
-
 // HotReloadProjectReconciler reconciles a HotReloadProject object
 type HotReloadProjectReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+	Clock
 }
 
 // For HotReloadProject resources
