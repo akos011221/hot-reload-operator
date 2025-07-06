@@ -41,7 +41,8 @@ type SourceSyncSpec struct {
 	Webhook string `json:"webhook"`
 
 	// List of paths/patterns to ignore when watching for changes
-	IgnorePaths []string `json:"ignorePaths"`
+	// +optional
+	IgnorePaths []string `json:"ignorePaths,omitempty"`
 }
 
 // BuildSpec defines the build configuration
