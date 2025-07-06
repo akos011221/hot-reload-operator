@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -27,15 +28,41 @@ import (
 	reloaderv1alpha1 "akosrbn.io/hot-reload/api/v1alpha1"
 )
 
+const (
+	// lastReloadAnnotation is the annotation key that stores the timestamp
+	// of the last hot-reload operation in RFC3339 format.
+	lastReloadAnnotation = "reloader.akosrbn.io/last-reload"
+
+	// buildIdAnnotation is the annotation key that stores the unique identifier
+	// of the current build, where the ID is the commit hash
+	buildIdAnnotation = "reloader.akosrbn.io/build-id"
+)
+
+type realClock struct{}
+
+func (_ realClock) Now() time.Time { return time.Now() }
+
+// Clock knows how to get the current time.
+// It can be used to fake out timing for testing.
+type Clock interface {
+	Now() time.Time
+}
+
 // HotReloadReconciler reconciles a HotReload object
 type HotReloadReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
+	Clock
 }
 
+// For HotReload Kind
 // +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=reloader.akosrbn.io,resources=hotreloads/finalizers,verbs=update
+
+// For Deployments (to restart/update containers)
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;update;patch
+// +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
