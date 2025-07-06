@@ -97,6 +97,7 @@ type HotReloadStatus struct {
 }
 
 // +kubebuilder:object:root=true
+//+kubebuilder:resource:path=cleaners,scope=Cluster
 // +kubebuilder:subresource:status
 
 // HotReload is the Schema for the hotreloads API.
